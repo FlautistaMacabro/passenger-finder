@@ -21,7 +21,8 @@ const passengerMap = [
 
 
 function findNewRide(driverPositionX, driverPositionY) {
-
+    let passengersList = findAllClosestPassengers(driverPositionX, driverPositionY);
+    return findTheClosestPassengerAndDistance(passengersList); 
 }
 
 
