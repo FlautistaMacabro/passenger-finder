@@ -41,12 +41,13 @@ function updateClosestPassengerAndDistance(currentX, currentY, driverPosX, drive
 
 function findNewRide(driverPositionX, driverPositionY) {
   // Retornando imediatamente caso o passageiro esteja no local do motorista
-  if(passengerMap[driverPositionX][driverPositionY] == 1)
+  if(passengerMap[driverPositionX][driverPositionY] === 1)
     return [[driverPositionX, driverPositionY], '0.00 km'];
   const passengerMapLength = passengerMap.length;
   // Inicializando a posição com valores impossíveis
   // Inicializando a distância com um valor maior do que qualquer distância possível
   let newRide = [[-1, -1], passengerMapLength*2];
+  // Atualizando a distância e a posição do passageiro mais próximo quando encontrados no mapa
   for (let i = 0; i < passengerMapLength; i++)
     for (let j = 0; j < passengerMapLength; j++)
       updateClosestPassengerAndDistance(i, j, driverPositionX, driverPositionY, newRide);
