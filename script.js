@@ -7,7 +7,7 @@ const passengerMap = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0., 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -40,59 +40,13 @@ function updateClosestPassengerAndDistance(currentX, currentY, driverPosX, drive
 }
 
 function findNewRide(driverPositionX, driverPositionY) {
-  /*if(passengerMap[driverPositionX][driverPositionY] == 1)
-    return [[driverPositionX, driverPositionY], '0.00 km'];*/
+  // Retornando imediatamente caso o passageiro esteja no local do motorista
+  if(passengerMap[driverPositionX][driverPositionY] == 1)
+    return [[driverPositionX, driverPositionY], '0.00 km'];
   const passengerMapLength = passengerMap.length;
   // Inicializando a posição com valores impossíveis
   // Inicializando a distância com um valor maior do que qualquer distância possível
   let newRide = [[-1, -1], passengerMapLength*2];
-  let i = 0;
-  // Verificando se o passageiro mais próximo não está na mesma linha X ou coluna Y
-  for(; i < driverPositionY; i++)
-    updateClosestPassengerAndDistance(driverPositionX, i, driverPositionX, driverPositionY, newRide);
-  for(i = driverPositionY+1; i < passengerMapLength; i++)
-    updateClosestPassengerAndDistance(driverPositionX, i, driverPositionX, driverPositionY, newRide);
-  for(i = 0; i < driverPositionX; i++)
-    updateClosestPassengerAndDistance(i, driverPositionY, driverPositionX, driverPositionY, newRide);
-  for(i = driverPositionX+1; i < passengerMapLength; i++)
-    updateClosestPassengerAndDistance(i, driverPositionY, driverPositionX, driverPositionY, newRide);
-  /* Atualizando o passageiro mais próximo e sua distância a partir das linhas e colunas mais próximas
-     ao motorista de acordo com um raio crescente dele a elas */
-  let intersectionSubY, intersectionSubX, currentLine, lineAddX;
-  for(let radius = 1; currentLine < passengerMapLength || lineAddX < passengerMapLength || 
-                      intersectionSubY > 0 || intersectionSubX > 0; radius++){
-    intersectionSubY = driverPositionY - radius;
-    if(intersectionSubY > -1)
-      for(i = 0; i < passengerMapLength; i++)
-        updateClosestPassengerAndDistance(i, intersectionSubY, driverPositionX, driverPositionY, newRide);
-    intersectionSubX = driverPositionX - radius;
-    if(intersectionSubX > -1){
-      for(i = 0; i < intersectionSubX; i++)
-        updateClosestPassengerAndDistance(intersectionSubX, i, driverPositionX, driverPositionY, newRide);
-      for(i = intersectionSubX+1; i < passengerMapLength; i++)
-        updateClosestPassengerAndDistance(intersectionSubX, i, driverPositionX, driverPositionY, newRide);
-    }
-    currentLine = driverPositionX + radius;
-    lineAddX = currentLine;
-    if(currentLine < passengerMapLength){
-      for(i = 0; i < intersectionSubY; i++)
-        updateClosestPassengerAndDistance(currentLine, i, driverPositionX, driverPositionY, newRide);
-      for(i = intersectionSubY+1; i < passengerMapLength; i++)
-        updateClosestPassengerAndDistance(currentLine, i, driverPositionX, driverPositionY, newRide);
-    }
-    currentLine = driverPositionY + radius;
-    if(currentLine < passengerMapLength){
-      for(i = 0; i < intersectionSubX; i++)
-        updateClosestPassengerAndDistance(i, currentLine, driverPositionX, driverPositionY, newRide);
-      for(i = intersectionSubX+1; i < currentLine; i++)
-        updateClosestPassengerAndDistance(i, currentLine, driverPositionX, driverPositionY, newRide);
-      for(i = currentLine+1; i < passengerMapLength; i++)
-        updateClosestPassengerAndDistance(i, currentLine, driverPositionX, driverPositionY, newRide);
-    }
-    if(newRide[0][0] != -1)
-      break;
-    radius++;
-  }
   for (let i = 0; i < passengerMapLength; i++)
     for (let j = 0; j < passengerMapLength; j++)
       updateClosestPassengerAndDistance(i, j, driverPositionX, driverPositionY, newRide);
