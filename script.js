@@ -1,30 +1,73 @@
 
 // Global passengers map for test
 const passengerMap = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0., 0],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
 ]
 
-
-function findNewRide(driverPositionX, driverPositionY) {
-    let passengersList = findAllClosestPassengers(driverPositionX, driverPositionY);
-    return findTheClosestPassengerAndDistance(passengersList); 
+function euclideanDistance(passengerPosition, driverPositionX, driverPositionY) {
+  return Math.sqrt((passengerPosition[0] - driverPositionX) ** 2 + 
+                   (passengerPosition[1] - driverPositionY) ** 2);
 }
 
+function stringKmFormat(distance) {
+  return `${distance.toFixed(2)} km`;
+}
+
+function updateClosestPassengerAndDistance(currentX, currentY, driverPosX, driverPosY, newRide) {
+  const currentPosition = [currentX, currentY];
+  if(passengerMap[currentPosition[0]][currentPosition[1]] != 1)
+    return;
+  const currentDistance = euclideanDistance(currentPosition, driverPosX, driverPosY);
+  if(currentDistance < newRide[1]) {
+    newRide[0] = currentPosition;
+    newRide[1] = currentDistance;
+  }
+}
+
+function findNewRide(driverPositionX, driverPositionY) {
+  if(passengerMap[driverPositionX][driverPositionY] == 1)
+    return [[driverPositionX, driverPositionY], '0.00 km'];
+  const passengerMapLength = passengerMap.length;
+  // Inicializando a posição com valores impossíveis
+  // Inicializando a distância com um valor maior do que qualquer distância possível
+  let newRide = [[-1, -1], passengerMapLength*2];
+  /*for (let radius = 1; (driverPositionX + radius) <= passengerMapLength ||
+                       (driverPositionY + radius) <= passengerMapLength ||
+                       (driverPositionX - radius) > -1 ||
+                       (driverPositionY - radius) > -1; radius++){
+    for (let i = (radius*(-1))+1; i < radius; i++) {
+      updateClosestPassengerAndDistance(radius*(-1), i, driverPositionX, driverPositionY, newRide);
+      updateClosestPassengerAndDistance(i, radius*(-1), driverPositionX, driverPositionY, newRide);
+      updateClosestPassengerAndDistance(i, radius, driverPositionX, driverPositionY, newRide);
+      updateClosestPassengerAndDistance(radius, i, driverPositionX, driverPositionY, newRide);
+    }
+    updateClosestPassengerAndDistance(radius*(-1), radius*(-1), driverPositionX, driverPositionY, newRide);
+    updateClosestPassengerAndDistance(radius, radius*(-1), driverPositionX, driverPositionY, newRide);
+    updateClosestPassengerAndDistance(radius*(-1), radius, driverPositionX, driverPositionY, newRide);
+    updateClosestPassengerAndDistance(radius, radius, driverPositionX, driverPositionY, newRide);
+    if(newRide[0][0] != -1)
+      break;*/
+  for (let i = 0; i < passengerMapLength; i++)
+    for (let j = 0; j < passengerMapLength; j++)
+      updateClosestPassengerAndDistance(i, j, driverPositionX, driverPositionY, newRide);
+  newRide[1] = stringKmFormat(newRide[1]);
+  return newRide;
+}
 
 // Tests, do not change, comment/uncomment for use.
 // console.log(findNewRide(0, 0).toString() == [[7, 0], '7.00 km'] ? '\033[32mPASS [0,0]\033' : '\033[31mFAIL [0,0]\033')
