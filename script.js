@@ -40,28 +40,43 @@ function updateClosestPassengerAndDistance(currentX, currentY, driverPosX, drive
 }
 
 function findNewRide(driverPositionX, driverPositionY) {
-  if(passengerMap[driverPositionX][driverPositionY] == 1)
-    return [[driverPositionX, driverPositionY], '0.00 km'];
+  /*if(passengerMap[driverPositionX][driverPositionY] == 1)
+    return [[driverPositionX, driverPositionY], '0.00 km'];*/
   const passengerMapLength = passengerMap.length;
   // Inicializando a posição com valores impossíveis
   // Inicializando a distância com um valor maior do que qualquer distância possível
   let newRide = [[-1, -1], passengerMapLength*2];
-  /*for (let radius = 1; (driverPositionX + radius) <= passengerMapLength ||
-                       (driverPositionY + radius) <= passengerMapLength ||
-                       (driverPositionX - radius) > -1 ||
-                       (driverPositionY - radius) > -1; radius++){
-    for (let i = (radius*(-1))+1; i < radius; i++) {
-      updateClosestPassengerAndDistance(radius*(-1), i, driverPositionX, driverPositionY, newRide);
-      updateClosestPassengerAndDistance(i, radius*(-1), driverPositionX, driverPositionY, newRide);
-      updateClosestPassengerAndDistance(i, radius, driverPositionX, driverPositionY, newRide);
-      updateClosestPassengerAndDistance(radius, i, driverPositionX, driverPositionY, newRide);
-    }
-    updateClosestPassengerAndDistance(radius*(-1), radius*(-1), driverPositionX, driverPositionY, newRide);
-    updateClosestPassengerAndDistance(radius, radius*(-1), driverPositionX, driverPositionY, newRide);
-    updateClosestPassengerAndDistance(radius*(-1), radius, driverPositionX, driverPositionY, newRide);
-    updateClosestPassengerAndDistance(radius, radius, driverPositionX, driverPositionY, newRide);
+  let nextLine;
+  // Verificando se o passageiro mais próximo não está na mesma linha X ou coluna Y
+  for(let i = 0; i < passengerMapLength; i++){
+    if(i != driverPositionY)
+      updateClosestPassengerAndDistance(driverPositionX, i, driverPositionX, driverPositionY, newRide);
+    updateClosestPassengerAndDistance(i, driverPositionY, driverPositionX, driverPositionY, newRide);
+  }
+  let radius = 1;
+  /* Atualizando o passageiro mais próximo e sua distância a partir das linhas e colunas mais próximas
+     ao motorista de acordo com um raio crescente dele a elas */
+  do{
+    currentLine = driverPositionY - radius;
+    if(currentLine > -1)
+      for(i = 0; i < passengerMapLength; i++)
+        updateClosestPassengerAndDistance(i, currentLine, driverPositionX, driverPositionY, newRide);
+    currentLine = driverPositionX - radius;
+    if(currentLine > -1)
+      for(i = 0; i < passengerMapLength; i++)
+        updateClosestPassengerAndDistance(currentLine, i, driverPositionX, driverPositionY, newRide);
+    currentLine = driverPositionX + radius;
+    if(currentLine < passengerMapLength)
+      for(i = 0; i < passengerMapLength; i++)
+        updateClosestPassengerAndDistance(currentLine, i, driverPositionX, driverPositionY, newRide);
+    currentLine = driverPositionY + radius;
+    if(currentLine < passengerMapLength)
+      for(i = 0; i < passengerMapLength; i++)
+        updateClosestPassengerAndDistance(i, currentLine, driverPositionX, driverPositionY, newRide);
     if(newRide[0][0] != -1)
-      break;*/
+      break;
+    radius++;
+  }while(true);
   for (let i = 0; i < passengerMapLength; i++)
     for (let j = 0; j < passengerMapLength; j++)
       updateClosestPassengerAndDistance(i, j, driverPositionX, driverPositionY, newRide);
