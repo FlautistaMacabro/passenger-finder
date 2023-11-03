@@ -58,32 +58,33 @@ function findNewRide(driverPositionX, driverPositionY) {
     updateClosestPassengerAndDistance(i, driverPositionY, driverPositionX, driverPositionY, newRide);
   /* Atualizando o passageiro mais próximo e sua distância a partir das linhas e colunas mais próximas
      ao motorista de acordo com um raio crescente dele a elas */
-  let radius = 1;
-  let intersectionNegY, intersectionNegX, currentLine;
-  do{
-    intersectionNegY = driverPositionY - radius;
-    if(intersectionNegY > -1)
+  let intersectionSubY, intersectionSubX, currentLine, lineAddX;
+  for(let radius = 1; currentLine < passengerMapLength || lineAddX < passengerMapLength || 
+                      intersectionSubY > 0 || intersectionSubX > 0; radius++){
+    intersectionSubY = driverPositionY - radius;
+    if(intersectionSubY > -1)
       for(i = 0; i < passengerMapLength; i++)
-        updateClosestPassengerAndDistance(i, intersectionNegY, driverPositionX, driverPositionY, newRide);
-    intersectionNegX = driverPositionX - radius;
-    if(intersectionNegX > -1){
-      for(i = 0; i < intersectionNegX; i++)
-        updateClosestPassengerAndDistance(intersectionNegX, i, driverPositionX, driverPositionY, newRide);
-      for(i = intersectionNegX+1; i < passengerMapLength; i++)
-        updateClosestPassengerAndDistance(intersectionNegX, i, driverPositionX, driverPositionY, newRide);
+        updateClosestPassengerAndDistance(i, intersectionSubY, driverPositionX, driverPositionY, newRide);
+    intersectionSubX = driverPositionX - radius;
+    if(intersectionSubX > -1){
+      for(i = 0; i < intersectionSubX; i++)
+        updateClosestPassengerAndDistance(intersectionSubX, i, driverPositionX, driverPositionY, newRide);
+      for(i = intersectionSubX+1; i < passengerMapLength; i++)
+        updateClosestPassengerAndDistance(intersectionSubX, i, driverPositionX, driverPositionY, newRide);
     }
     currentLine = driverPositionX + radius;
+    lineAddX = currentLine;
     if(currentLine < passengerMapLength){
-      for(i = 0; i < intersectionNegY; i++)
+      for(i = 0; i < intersectionSubY; i++)
         updateClosestPassengerAndDistance(currentLine, i, driverPositionX, driverPositionY, newRide);
-      for(i = intersectionNegY+1; i < passengerMapLength; i++)
+      for(i = intersectionSubY+1; i < passengerMapLength; i++)
         updateClosestPassengerAndDistance(currentLine, i, driverPositionX, driverPositionY, newRide);
     }
     currentLine = driverPositionY + radius;
     if(currentLine < passengerMapLength){
-      for(i = 0; i < intersectionNegX; i++)
+      for(i = 0; i < intersectionSubX; i++)
         updateClosestPassengerAndDistance(i, currentLine, driverPositionX, driverPositionY, newRide);
-      for(i = intersectionNegX+1; i < currentLine; i++)
+      for(i = intersectionSubX+1; i < currentLine; i++)
         updateClosestPassengerAndDistance(i, currentLine, driverPositionX, driverPositionY, newRide);
       for(i = currentLine+1; i < passengerMapLength; i++)
         updateClosestPassengerAndDistance(i, currentLine, driverPositionX, driverPositionY, newRide);
@@ -91,7 +92,7 @@ function findNewRide(driverPositionX, driverPositionY) {
     if(newRide[0][0] != -1)
       break;
     radius++;
-  }while(true);
+  }
   for (let i = 0; i < passengerMapLength; i++)
     for (let j = 0; j < passengerMapLength; j++)
       updateClosestPassengerAndDistance(i, j, driverPositionX, driverPositionY, newRide);
