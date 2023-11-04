@@ -19,9 +19,9 @@ const passengerMap = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
 ]
 
-function euclideanDistance(passengerPosition, driverPositionX, driverPositionY) {
-  return Math.sqrt((passengerPosition[0] - driverPositionX) ** 2 + 
-                   (passengerPosition[1] - driverPositionY) ** 2);
+function euclideanDistance(passengerPositionX, passengerPositionY, driverPositionX, driverPositionY) {
+  return Math.sqrt((passengerPositionX - driverPositionX) ** 2 + 
+                   (passengerPositionY - driverPositionY) ** 2);
 }
 
 function stringKmFormat(distance) {
@@ -29,12 +29,11 @@ function stringKmFormat(distance) {
 }
 
 function updateClosestPassengerAndDistance(currentX, currentY, driverPosX, driverPosY, newRide) {
-  const currentPosition = [currentX, currentY];
-  if(passengerMap[currentPosition[0]][currentPosition[1]] != 1)
+  if(passengerMap[currentX][currentY] != 1)
     return;
-  const currentDistance = euclideanDistance(currentPosition, driverPosX, driverPosY);
+  const currentDistance = euclideanDistance(currentX, currentY, driverPosX, driverPosY);
   if(currentDistance < newRide[1]) {
-    newRide[0] = currentPosition;
+    newRide[0] = [currentX, currentY];
     newRide[1] = currentDistance;
   }
 }
