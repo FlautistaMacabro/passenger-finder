@@ -1,3 +1,34 @@
+// -------------------------- Desafio Alternativo -------------------------- //
+
+// function encontreMaiorSomaLinha(numbersMatrix) {
+//   let j, i, lineSum;
+//   // Somando a primeira linha separamente para obter o primeiro valor de comparação com as demais somas
+//   let biggerSum = numbersMatrix[0][0];
+//   for (j = 1; j < numbersMatrix[0].length; j++)
+//     biggerSum += numbersMatrix[0][j];
+//   // Somando as demais linhas e encontrando a maior soma
+//   for (i = 1; i < numbersMatrix.length; i++) {
+//     lineSum = numbersMatrix[i][0];
+//     for (j = 1; j < numbersMatrix[i].length; j++)
+//       lineSum += numbersMatrix[i][j];
+//     if (lineSum > biggerSum)
+//       biggerSum = lineSum;
+//   }
+//   return biggerSum;
+// }
+
+// const matriz = [
+//   [1, 2, 3], 
+//   [4, 5, 6], 
+//   [7, 8, 9], 
+//   [10, 11, 12]
+// ];
+
+// const maiorSomaLinha = encontreMaiorSomaLinha(matriz);
+
+// console.log("A linha com a maior soma é: ", maiorSomaLinha);
+
+// ------------------------------------------------------------------------- //
 
 // Global passengers map for test
 const passengerMap = [
