@@ -2,6 +2,7 @@
 
 // function encontreMaiorSomaLinha(numbersMatrix) {
 //   let j, i, lineSum;
+//   let lineBiggerSum = 0;
 //   // Somando a primeira linha separamente para obter o primeiro valor de comparação com as demais somas
 //   let biggerSum = numbersMatrix[0][0];
 //   for (j = 1; j < numbersMatrix[0].length; j++)
@@ -11,17 +12,19 @@
 //     lineSum = numbersMatrix[i][0];
 //     for (j = 1; j < numbersMatrix[i].length; j++)
 //       lineSum += numbersMatrix[i][j];
-//     if (lineSum > biggerSum)
+//     if (lineSum > biggerSum){
 //       biggerSum = lineSum;
+//       lineBiggerSum = i;
+//     }
 //   }
-//   return biggerSum;
+//   return lineBiggerSum;
 // }
 
 // const matriz = [
 //   [1, 2, 3], 
 //   [4, 5, 6], 
 //   [7, 8, 9], 
-//   [10, 11, 12]
+//   [-10, -11, -12]
 // ];
 
 // const maiorSomaLinha = encontreMaiorSomaLinha(matriz);
